@@ -1,5 +1,12 @@
 package hlt
 
+type point struct {
+	x, y float64
+}
+type line struct {
+	p1, p2 point
+}
+
 func StrategyBasicBot(ship Ship, gameMap Map) string {
 	planets := gameMap.NearestPlanetsByDistance(ship)
 
@@ -9,8 +16,10 @@ func StrategyBasicBot(ship Ship, gameMap Map) string {
 			if ship.CanDock(planet) {
 				return ship.Dock(planet)
 			} else {
-
-				return ship.Navigate(ship.ClosestPointTo(planet.Entity, 3), gameMap)
+				r := ship.Navigate(ship.ClosestPointTo(planet.Entity, 3), gameMap)
+				if r != "" {
+					return r
+				}
 			}
 		}
 	}

@@ -46,7 +46,7 @@ func NewConnection(botName string) (Connection) {
 	height, _ := strconv.Atoi(sizeInfo[1])
 	conn.width = width
 	conn.height = height
-	conn.sendString(botName)
+	conn.sendString("Asdf")
 	return conn
 }
 

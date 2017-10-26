@@ -53,6 +53,12 @@ type Ship struct {
 	WeaponCooldown  float64
 }
 
+func (self Planet) CalculateDistanceTo(target Entity) float64 {
+	dx := target.X - self.X
+	dy := target.Y - self.Y
+
+	return math.Sqrt(dx*dx + dy*dy) - self.Radius
+}
 func (self Entity) CalculateDistanceTo(target Entity) float64 {
 	// returns euclidean distance to target
 	dx := target.X - self.X
@@ -188,10 +194,11 @@ func (ship Ship) NavigateBasic(target Entity, gameMap Map) string {
 
 	distance := ship.CalculateDistanceTo(target)
 
+	distance -= target.Radius;
 	angle := ship.CalculateAngleTo(target)
 	speed:=7.0
-	if distance<10{
-		speed = 3.0
+	if distance < 11.0 {
+		speed = 3
 	} else {
 		speed =7.0
 	}
@@ -201,9 +208,9 @@ func (ship Ship) NavigateBasic(target Entity, gameMap Map) string {
 }
 
 func (ship Ship) CanDock(planet Planet) bool {
-	dist := ship.CalculateDistanceTo(planet.Entity)
+	dist := planet.CalculateDistanceTo(ship.Entity)
 
-	return dist <= (planet.Radius + 6)
+	return dist < 4
 }
 
 func (ship Ship) Navigate(target Entity, gameMap Map) string {
@@ -215,7 +222,7 @@ func (ship Ship) Navigate(target Entity, gameMap Map) string {
 		return ship.NavigateBasic(target, gameMap)
 	} else {
 
-		x0 := math.Min(ship.X, target.X)
+		/*x0 := math.Min(ship.X, target.X)
 		x2 := math.Max(ship.X, target.X)
 		y0 := math.Min(ship.Y, target.Y)
 		y2 := math.Max(ship.Y, target.Y)
@@ -252,7 +259,8 @@ func (ship Ship) Navigate(target Entity, gameMap Map) string {
 		}
 
 
-		return ship.NavigateBasic(bestTarget, gameMap)
+		return ship.NavigateBasic(bestTarget, gameMap)*/
+		return ""
 
 	}
 
