@@ -51,6 +51,7 @@ type Ship struct {
 	DockingStatus   DockingStatus
 	DockingProgress float64
 	WeaponCooldown  float64
+	Distance 		float64
 }
 
 func (self Planet) CalculateDistanceTo(target Entity) float64 {

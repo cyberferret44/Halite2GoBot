@@ -24,5 +24,16 @@ func StrategyBasicBot(ship Ship, gameMap Map) string {
 		}
 	}
 
+	enemies := gameMap.NearestEnemiesByDistance(ship)
+
+	for i := 0; i < len(enemies); i++ {
+		enemy := enemies[i]
+		r := ship.Navigate(ship.ClosestPointTo(enemy.Entity, 3), gameMap)
+		if r != "" {
+			return r
+		}
+	}
+	
+
 	return ""
 }

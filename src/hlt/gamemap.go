@@ -13,6 +13,7 @@ type Map struct {
 	Planets             [] Planet /// preallocating for speed, assuming we cant have > 100 planets
 	Players             [4] Player
 	Entities            []Entity
+	Enemies				[]Ship
 }
 
 type Player struct {
@@ -50,6 +51,9 @@ func ParseGameString(gameString string, self Map) Map {
 		self.Players[player.Id] = player
 		for j := 0; j < len(player.Ships); j++ {
 			self.Entities = append(self.Entities, player.Ships[j].Entity)
+			if(player.Id > 0) {
+				self.Enemies = append(self.Enemies, player.Ships[j])
+			}
 		}
 	}
 
@@ -112,14 +116,24 @@ func (gameMap Map) NearestPlanetsByDistance(ship Ship) [] Planet {
 	planets := gameMap.Planets
 
 	for i := 0; i < len(planets); i++ {
-
-		planets[i].Distance = ship.CalculateDistanceTo(planets[i].Entity)
+		planets[i].Distance = planets[i].CalculateDistanceTo(ship.Entity)
 	}
 
 	sort.Sort(byDist(planets))
 
-
 	return planets
+}
+
+func (gameMap Map) NearestEnemiesByDistance(ship Ship) [] Ship {
+	enemies := gameMap.Enemies
+
+	for i := 0; i < len(enemies); i++ {
+		enemies[i].Distance = enemies[i].CalculateDistanceTo(ship.Entity)
+	}
+
+	sort.Sort(byDist2(enemies))
+
+	return enemies
 }
 
 type byDist [] Planet
@@ -127,3 +141,9 @@ type byDist [] Planet
 func (a byDist) Len() int           { return len(a) }
 func (a byDist) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a byDist) Less(i, j int) bool { return a[i].Distance < a[j].Distance }
+
+type byDist2 [] Ship
+
+func (a byDist2) Len() int           { return len(a) }
+func (a byDist2) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a byDist2) Less(i, j int) bool { return a[i].Distance < a[j].Distance }

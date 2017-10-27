@@ -34,7 +34,6 @@ func main() {
 
 		myPlayer := gameMap.Players[gameMap.MyId]
 		myShips := myPlayer.Ships
-
 		for i := 0; i < len(myShips); i++ {
 			ship := myShips[i]
 			if ship.DockingStatus == hlt.UNDOCKED {
